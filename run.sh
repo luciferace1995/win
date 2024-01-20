@@ -2,7 +2,7 @@
 
 # Định nghĩa đường dẫn và URL của script cần tải
 SCRIPT_DIR="/media/script"
-SCRIPT_URL="https://github.com/luciferace1995/win/blob/main/settup.sh"
+SCRIPT_URL="https://raw.githubusercontent.com/luciferace1995/win/main/settup.sh"
 SCRIPT_PATH="${SCRIPT_DIR}/settup.sh"
 
 # Chuyển sang người dùng root
