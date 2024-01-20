@@ -1,25 +1,24 @@
 #!/bin/bash
 
-# Định nghĩa URL của script từ GitHub
-SCRIPT_URL="https://raw.githubusercontent.com/luciferace1995/win/main/settup.sh"
+# Định nghĩa đường dẫn và URL của script cần tải
+SCRIPT_DIR="/media/script"
+SCRIPT_URL="https://github.com/luciferace1995/win/blob/main/settup.sh"
+SCRIPT_PATH="${SCRIPT_DIR}/settup.sh"
 
-# Định nghĩa tên file cho script được tải xuống
-SCRIPT_NAME="setup.sh"
-
-# Tải xuống script
-echo "Đang tải xuống script từ $SCRIPT_URL..."
-wget "$SCRIPT_URL" -O "$SCRIPT_NAME" || curl -o "$SCRIPT_NAME" "$SCRIPT_URL"
-
-# Kiểm tra xem việc tải xuống có thành công không
-if [ ! -f "$SCRIPT_NAME" ]; then
-    echo "Không thể tải xuống script."
-    exit 1
+# Chuyển sang người dùng root
+if [ "$EUID" -ne 0 ]; then 
+  echo "Script cần được chạy với quyền root. Sử dụng 'sudo ./install_script.sh'"
+  exit 1
 fi
 
-# Cấp quyền thực thi cho script
-echo "Cấp quyền thực thi cho script..."
-chmod +x "$SCRIPT_NAME"
+# Tạo thư mục và mount tmpfs
+mkdir -p "$SCRIPT_DIR"
+mount -t tmpfs -o size=1m tmpfs "$SCRIPT_DIR"
+
+# Tải xuống và cấp quyền thực thi cho script
+wget -P "$SCRIPT_DIR" "$SCRIPT_URL"
+chmod +x "$SCRIPT_PATH"
 
 # Chạy script
-echo "Chạy script..."
-./"$SCRIPT_NAME"
+echo "Đang chạy script..."
+bash "$SCRIPT_PATH"
